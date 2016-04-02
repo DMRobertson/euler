@@ -3,9 +3,9 @@ if [ ! -f src/euler$1.rs ]; then
 	exit 1
 fi
 
-if [ ! -d log ]; then
-	mkdir log
-fi
+[ ! -d log    ] && mkdir log
+[ ! -d target ] && mkdir target
+rm target/euler$1*
 
 rustc --out-dir target --test src/euler$1.rs
 ./target/euler$1 > log/euler$1
