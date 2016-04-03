@@ -16,5 +16,5 @@ if [ $? -ne 0 ]; then
 	exit 2
 fi
 
-rustc --out-dir target src/euler$1.rs
+rustc -O --out-dir target src/euler$1.rs
 ./target/euler$1
