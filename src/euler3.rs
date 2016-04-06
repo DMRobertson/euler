@@ -7,16 +7,6 @@ fn test(){
 	assert_eq!(result, expected);
 }
 
-// fn is_prime(n: u64) -> bool {
-	// let bound = (n as f32).sqrt() as u64;
-	// for i in (2..bound+1){
-		// if n % i == 0 {
-			// return false
-		// }
-	// }
-	// true
-// }
-
 fn prime_factors(mut n: u64) -> Vec<u64> {
 	let mut factors = Vec::new();
 	let mut trial_divisor = 2;
