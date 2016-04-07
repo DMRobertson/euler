@@ -37,7 +37,7 @@ impl Iterator for Primes {
 
 /// What is the 10 001st prime number?
 fn main() {
-	// note that
+	// note that the first item is .nth(0)
 	println!("{}", Primes::new().nth(10_001 - 1).unwrap());
 }
 
