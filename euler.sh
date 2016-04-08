@@ -1,3 +1,4 @@
+#! /bin/sh
 #1. Check that the rust file exists.
 if [ ! -f src/euler$1.rs ]; then
 	echo "Can't find src/euler$1.rs"

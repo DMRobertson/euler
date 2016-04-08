@@ -1,39 +1,5 @@
-fn is_prime(n: u32) -> bool {
-	let bound = (n as f32).sqrt() as u32;
-	for i in 2..bound+1 {
-		if n % i == 0 {
-			return false
-		}
-	}
-	true
-}
-
-struct Primes {
-		candidate: u32
-}
-
-impl Primes {
-	fn new() -> Primes {
-		Primes{ candidate: 0 }
-	}
-}
-
-impl Iterator for Primes {
-	type Item = u32;
-
-	fn next(&mut self) -> Option<u32> {
-		if self.candidate < 1 {
-			self.candidate = 1;
-			Some(2)
-		} else {
-			self.candidate += 2;
-			while !is_prime(self.candidate) {
-				self.candidate += 2;
-			}
-			Some(self.candidate)
-		}
-	}
-}
+mod numthry;
+use numthry::Primes;
 
 /// What is the 10 001st prime number?
 fn main() {
@@ -45,6 +11,6 @@ fn main() {
 #[test]
 fn test() {
 	let expected = vec![2, 3, 5, 7, 11, 13];
-	let result: Vec<u32> = Primes::new().take(6).collect();
+	let result: Vec<u64> = Primes::new().take(6).collect();
 	assert_eq!(result, expected);
 }
