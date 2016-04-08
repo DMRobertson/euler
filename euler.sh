@@ -10,13 +10,13 @@ fi
 #3. Remove any previous binaries for this problem.
 [ -f target/euler$1* ] && rm target/euler$1*
 
-#4. Compile and test the given problem, saving output to the log directory.
+#4. Compile and test the given problem, saving stdout to the log directory.
 rustc --out-dir target --test src/euler$1.rs
 ./target/euler$1 > log/euler$1
 
 if [ $? -ne 0 ]; then
 	echo "Error in test, output shown below."
-	cat log/euler$1
+	cat log/euler$1.test
 	exit 2
 fi
 
