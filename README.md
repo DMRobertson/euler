@@ -1,2 +1,2 @@
-Attempting to solve [https://projecteuler.net/](Project Euler) problems as a means to learn Rust.
-To build, test and run the solution to problem x, run `./euler.sh x`.
+Attempting to solve [https://projecteuler.net/](Project Euler) problems as a means to learn various languages.
+See verify.py for instructions on how to build/test/run the solutions.

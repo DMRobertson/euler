@@ -39,7 +39,7 @@ fn max_product_of_substring(digits: Vec<u8>, width: usize) -> u64 {
 
 /// Find the thirteen adjacent digits in the 1000-digit number that have the greatest product. What is the value of this product?
 fn main() {
-	let digits = load_digits("resource/problem8.num");
+	let digits = load_digits("../resource/problem8.num");
 	println!("{}", max_product_of_substring(digits, 13) );
 }
 
@@ -47,7 +47,7 @@ fn main() {
 #[test]
 fn test() {
 	let expected = 5832;
-	let digits = load_digits("resource/problem8.num");
+	let digits = load_digits("../resource/problem8.num");
 	let result = max_product_of_substring(digits, 4);
 	assert_eq!(result, expected);
 }

@@ -1,0 +1,12 @@
+Project Euler answers x in the form codecs.encode( bytes(str(x), encoding='ascii'), 'base64' )
+MjMzMTY4
+NDYxMzczMg==
+Njg1Nw==
+OTA2NjA5
+MjMyNzkyNTYw
+MjUxNjQxNTA=
+MTA0NzQz
+MjM1MTQ2MjQwMDA=
+MzE4NzUwMDA=
+MTQyOTEzODI4OTIy
+NzA2MDA2NzQ=
