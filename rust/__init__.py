@@ -4,6 +4,13 @@ from subprocess import check_call, check_output, STDOUT
 
 WINDOWS = os.name == "windows"
 
+def setup():
+	os.makedirs('target', exist_ok=True)
+
+def clean():
+	os.rmdir('log')
+	os.rmdir('target')
+
 def basename(index):
 	return "euler{}".format(index)
 

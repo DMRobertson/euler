@@ -1,4 +1,4 @@
-#! python3
+#! /usr/bin/env python3
 """
 Check that the solutions for a given language are valid.
 The language-specific calls are implemented in /LANGUAGE/__init__.py
@@ -17,9 +17,10 @@ from codecs       import decode
 from contexttimer import Timer
 from docopt       import docopt
 from importlib    import import_module
-from os           import chdir
+from os           import chdir, makedirs
 
 def setup_logging(lang):
+	makedirs('log', exist_ok=True)
 	logger = logging.getLogger("euler " + lang)
 	logger.setLevel('DEBUG')
 
@@ -44,12 +45,13 @@ def get_answers():
 		answers = [ int( decode(line, 'base64') ) for line in f ]
 		return answers
 
-def verify(args, answers, lang, prepare, run):
-	logger = setup_logging(lang)
+def verify(args, answers, lang_name, lang):
+	lang.setup()
+	logger = setup_logging(lang_name)
 	for index, answer in enumerate(answers, start=1):
-		if not '--noprep' in args:
+		if not args['--noprep']:
 			try:
-				prepare(index)
+				lang.prepare(index)
 			except Exception as e:
 				logging.critical("Could not prepare problem {}: {}".format(
 					index, e))
@@ -57,11 +59,11 @@ def verify(args, answers, lang, prepare, run):
 
 		with Timer() as t:
 			try:
-				result = run(index)
+				result = lang.run(index)
 			except Exception as e:
 				logger.critical("Could not run problem {}: {}".format(
 					index, e))
-				logger.debug("See {} for details.".format(lang + '/log'))
+				logger.info("See {} for details.".format(lang + '/log'))
 				continue
 			else:
 				result = int(result)
@@ -85,7 +87,7 @@ def main(args):
 		raise e
 	answers = get_answers()
 	chdir(lang)
-	verify(args, answers, lang, lang_handler.prepare, lang_handler.run)
+	verify(args, answers, lang, lang_handler)
 
 if __name__ == "__main__":
 	args = docopt(__doc__)
