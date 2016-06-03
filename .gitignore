@@ -1,2 +1,4 @@
+verify.log
 */log
-*/__pycache__
+*/target
+__pycache__
