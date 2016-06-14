@@ -19,11 +19,12 @@ def clean():
 	os.rmdir('log')
 	os.rmdir('target')
 
-def prepare(index, logger=None, extension='.code', argv=tuple(), ):
+def prepare(index, logger=None, extension='.code', get_argv=None):
 	source = "src/" + basename(index) + extension
 	logfile = "log/" + str(index) + ".prepare.log"
+	argv = get_argv(index, source)
 	with open(logfile, "wt") as log:
-		check_call(argv + [source], stdout=log, stderr=STDOUT)
+		check_call(argv, stdout=log, stderr=STDOUT)
 	if logger:
 		dump_log(logger, logfile)
 

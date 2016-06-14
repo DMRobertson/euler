@@ -24,6 +24,7 @@ from contexttimer import Timer
 from docopt       import docopt
 from importlib    import import_module
 from os           import chdir, makedirs
+from sys          import exc_info
 
 def setup_logging(lang):
 	makedirs('log', exist_ok=True)
@@ -60,6 +61,8 @@ def verify(index, answer, display, lang, args, logger):
 		except Exception as e:
 			logger.critical("Could not prepare problem {}: {}".format(
 				index, e))
+			logger.info("See {} for details.".format(lang.name + '/log'))
+			logger.debug("Traceback below", exc_info=exc_info())
 			return
 	
 	#2. Time the run.
@@ -70,6 +73,7 @@ def verify(index, answer, display, lang, args, logger):
 			logger.critical("Could not run problem {}: {}".format(
 				index, e))
 			logger.info("See {} for details.".format(lang.name + '/log'))
+			logger.debug("Traceback below", exc_info=exc_info())
 			return
 	
 	#3. Is the result an integer?
