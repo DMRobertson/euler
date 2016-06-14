@@ -1,7 +1,7 @@
 """Common patterns to be specialised per-language"""
 
 import os
-from subprocess import check_call, check_output, STDOUT
+from subprocess import check_call, check_output, STDOUT, CalledProcessError
 from functools  import partial
 
 WINDOWS = os.name == "windows"
@@ -33,13 +33,25 @@ def run(index, logger=None):
 		executable += ".exe"
 	
 	logfile = "log/" + str(index) + ".run.log"
-	with open(logfile, "wt") as log:
-		returncode = check_output(executable, stderr=log)
-	if logger:
-		dump_log(logger, logfile)
-	return returncode
+	try:
+		error = None
+		with open(logfile, "wt", encoding='utf-8') as log:
+			try:
+				stdout = check_output(executable, stderr=log)
+			except CalledProcessError as e:
+				error = e
+				stdout = e.output
+				raise
+			finally:
+				if stdout.strip():
+					log.write("** STDOUT **\n")
+					log.write(str(stdout, encoding='ascii'))
+	finally:
+		if logger:
+			dump_log(logger, logfile)
+	return stdout
 
 def dump_log(logger, logfile):
 	with open(logfile, "rt") as f:
 		for line in f:
-			logger.info(line)
+			logger.debug(line.rstrip())
