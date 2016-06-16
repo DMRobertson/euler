@@ -31,7 +31,7 @@ def setup_logging(lang):
 	logger = logging.getLogger("euler " + lang)
 	logger.setLevel('DEBUG')
 
-	filename = "verify.log"
+	filename = "log/verify.log"
 	filedump = logging.FileHandler(filename, mode='wt', encoding='utf-8')
 	filedump.setLevel('DEBUG')
 	formatter = logging.Formatter('%(asctime)s %(levelname)-8s %(message)s')

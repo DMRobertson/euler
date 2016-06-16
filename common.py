@@ -44,6 +44,8 @@ def run(index, logger=None):
 				stdout = e.output
 				raise
 			finally:
+				if error:
+					log.write("Error: " + str(error) + "\n")
 				if stdout.strip():
 					log.write("** STDOUT **\n")
 					log.write(str(stdout, encoding='ascii'))
