@@ -17,13 +17,13 @@ size_t ceildiv(size_t num, int div){
 	return (num + div - 1) / div;
 }
 
-struct packed_bool_array {
+typedef struct packed_bool_array {
 	// An array of booleans stored in the bits of chars in memeory
 	size_t boollength;
 	size_t charlength;
 	unsigned char* array;
-};
-typedef struct packed_bool_array barray;
+} barray;
+
 
 barray bool_array(size_t length){
 	/* Efficiently store an array of booleans by packing as many bools as we can get away with into a char. */
@@ -33,11 +33,11 @@ barray bool_array(size_t length){
 	return output;
 }
 
-void bsetall(barray data, unsigned char value){
+void bsetall(barray &data, unsigned char value){
 	memset(data.array, value, data.charlength);
 }
 
-bool bget(barray data, size_t index){
+bool bget(barray &data, size_t index){
 	size_t bitnum = index % CHAR_BIT;
 	index /= CHAR_BIT;
 	unsigned char mask = (1 << bitnum);
@@ -45,7 +45,7 @@ bool bget(barray data, size_t index){
 	return bit;
 }
 
-void bset(barray data, size_t index, bool value){
+void bset(barray &data, size_t index, bool value){
 	unsigned char bitnum = index % CHAR_BIT;
 	index /= CHAR_BIT;
 	unsigned char mask = (1 << bitnum);
@@ -69,10 +69,12 @@ size_t sum_sieve_of_erastosthenes(size_t limit){
 		}
 	}
 	//2. How many primes \pi(n) did we find?
+	size_t sum = 0;
 	size_t num_primes = 0;
 	for (size_t i = 2; i <= limit; i++){
 		if (bget(sieve, i - 2)) {
 			num_primes++;
+			sum += i;
 		}
 	}
 	
@@ -88,12 +90,15 @@ size_t sum_sieve_of_erastosthenes(size_t limit){
 	// primes[index] = 0;
 	// return primes;
 	
-	size_t sum = 0;
-	for (size_t i = 2; i <= limit; i++){
-		if (bget(sieve, i - 2)) {
-			sum += i;
-		}
-	}
+	//size_t sum = 0;
+	//for (size_t i = 2; i <= limit; i++){
+	//	if (bget(sieve, i - 2)) {
+	//		sum += i;
+	//	}
+	//}
+	
+	free(sieve.array);
+	
 	return sum;
 }
 
