@@ -1,60 +1,40 @@
-"""Common patterns to be specialised per-language"""
+"""Helper functions to implement per-language calls"""
 
 import os
-from subprocess import check_call, check_output, STDOUT, CalledProcessError
-from functools  import partial
+from subprocess import check_output, STDOUT
 
 WINDOWS = os.name == "windows"
 
-__all__ = ["setup", "clean", "prepare", "run", "basename", "partial"]
-
-def basename(index):
-	return "euler{}".format(index)
-
-def setup():
-	os.makedirs('log',    exist_ok=True)
-	os.makedirs('target', exist_ok=True)
-
-def clean():
-	os.rmdir('log')
-	os.rmdir('target')
-
-def prepare(index, logger=None, extension='.code', get_argv=None):
-	source = "src/" + basename(index) + extension
-	logfile = "log/" + str(index) + ".prepare.log"
-	argv = get_argv(index, source)
-	with open(logfile, "wt") as log:
-		check_call(argv, stdout=log, stderr=STDOUT)
-	if logger:
-		dump_log(logger, logfile)
-
-def run(index, logger=None):
-	executable = "target/" + basename(index)
-	if WINDOWS:
-		executable += ".exe"
+def implemented(index, extension):
+	return os.path.isfile(source(index, extension))
 	
-	logfile = "log/" + str(index) + ".run.log"
-	try:
-		error = None
-		with open(logfile, "wt", encoding='utf-8') as log:
-			try:
-				stdout = check_output(executable, stderr=log)
-			except CalledProcessError as e:
-				error = e
-				stdout = e.output
-				raise
-			finally:
-				if error:
-					log.write("Error: " + str(error) + "\n")
-				if stdout.strip():
-					log.write("** STDOUT **\n")
-					log.write(str(stdout, encoding='ascii'))
-	finally:
-		if logger:
-			dump_log(logger, logfile)
-	return stdout
+def setup(compiled=True):
+	os.makedirs('log',    exist_ok=True)
+	if compiled:
+		os.makedirs('target', exist_ok=True)
 
-def dump_log(logger, logfile):
-	with open(logfile, "rt") as f:
-		for line in f:
-			logger.debug(line.rstrip())
+def clean(compiled=True):
+	os.rmdir('log')
+	if compiled:
+		os.rmdir('target')
+
+def source(index, extension):
+	return os.path.join("src", "euler" + str(index) + extension)
+	
+def target(index):
+	extension = ".exe" if WINDOWS else ""
+	return os.path.join("target", "euler" + str(index) + extension)
+
+def prepare(index, logger, extension=None, get_argv=None):
+	src = source(index, extension)
+	argv = get_argv(index, src)
+	stdout_err = check_output(argv, stderr=STDOUT)
+	return stdout_err.decode('utf8')
+
+def run(index, logger=None, get_argv=None):
+	if get_argv is None:
+		argv = target(index)
+	else:
+		argv = get_argv(index)
+	stdout_err = check_output(argv, stderr=STDOUT)
+	return stdout_err.decode('utf8')
