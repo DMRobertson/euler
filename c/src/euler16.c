@@ -14,18 +14,12 @@ int digit_sum_two_power(unsigned long int power){
 	mpz_t result;
 	mpz_init(result);
 	mpz_ui_pow_ui(result, 2, power);
-	
-	size_t length = mpz_sizeinbase(result, 2);
-	char* formatted = malloc(sizeof(char) * (length + 1));
-	gmp_sprintf(formatted, "%Zd", result);
+	char* formatted = mpz_get_str(NULL, 10, result);
+	mpz_clear(result);
 	
 	int digit_sum = 0;
-	char c = 1;
-	char* location = formatted;
-	while (*location != '\0'){
-		c = *location - '0';
-		digit_sum += c;
-		location++;
+	for (char* location = formatted; *location != '\0'; location++){
+		digit_sum += *location - '0';
 	}
 	
 	free(formatted);

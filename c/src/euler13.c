@@ -39,6 +39,7 @@ void sum_digits(mpz_t* sum, char* nums){
 		mpz_set_str(summand, loc, 10);
 		mpz_add(*sum, *sum, summand);
 	}
+	mpz_clear(summand);
 }
 
 int main(){
@@ -48,6 +49,7 @@ int main(){
 	sum_digits(&sum, numbers);
 	free(numbers);
 	
+	//This doesn't feel like the cleanest way of getting the top ten numbers.
 	const size_t sum_digits = DIGITS + decimal_digits(NUMBERS);
 	char* buffer = malloc(sizeof (char) * (sum_digits + 1));
 	gmp_sprintf(buffer, "%Zd", sum);
