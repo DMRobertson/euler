@@ -54,11 +54,17 @@ def setup_logging(lang, args):
 	logger.info("Logging to {}".format(filename))
 	return logger
 
-def get_answers():
+def get_answers(args):
+	if args['--debug']:
+		return DummyList()
 	with open('resource/answers.txt', 'rb') as f:
 		f.readline()
 		answers = [ int( decode(line, 'base64') ) for line in f ]
 		return answers
+
+class DummyList:
+	def __getitem__(self, key):
+		return None
 
 def verify(index, answer, lang, args, logger):
 	"""Verify that <lang>'s solution to problem <index> is the expected <answer>.
@@ -144,7 +150,7 @@ def main(args):
 			args["<language>"]))
 	
 	#2. If so, prepare to compile/run
-	answers = get_answers()
+	answers = get_answers(args)
 	chdir(lang.name)
 	if args['--clean']:
 		lang.clean()
@@ -157,11 +163,16 @@ def main(args):
 			if index <= 0:
 				raise ValueError
 		except Exception:
-			logger.critical("Couldn't interpret --problem {} as a positive integer".format(
+			logger.exception("Couldn't interpret '--problem {}' as a positive integer".format(
 				args['--problem']))
 			return
-		else:
+		
+		try:
 			expected = [(index, answers[index - 1])]
+		except IndexError:
+			logger.critical("Can't verify problem {}: no answer in resource/answers.txt".format(
+				args['problem']
+			))
 	else:
 		expected = enumerate(answers, start=1)
 	
