@@ -39,38 +39,37 @@ static int small_numbers[20] = {
 
 static int multiples_of_ten[10] = {
 	0, // zero
-	0, // ten
+	0, // ten; anything below 20 is handled by small_numbers
 	6, // twenty
 	6, // thirty
 	5, // forty
 	5, // fifty
-	6, // sixty
+	5, // sixty
 	7, // seventy
 	6, // eighty
 	6, // ninety
 };
 
 unsigned int letters_in_english(unsigned int num){
-	unsigned int orig = num;
-	if (num == 0){
-		return 0;
-	}
+	assert(num < 1000000);
 	unsigned int total = 0;
-	if (num > 1000){
+	unsigned int orig = num;
+	if (num >= 1000){
 		total += letters_in_english(num / 1000) + LEN_THOUSAND;
 	}
 	num %= 1000;
 	
-	if (num > 100){
-		total += small_numbers[num/100] + LEN_HUNDRED;
+	if (num >= 100){
+		total += small_numbers[num / 100] + LEN_HUNDRED;
 	}
 	num %= 100;
 	
-	if (orig >= 100 && num != 0){
+	if (orig > 100 && num != 0){
 		total += LEN_AND;
 	}
-	if (num > 20){
-		total += multiples_of_ten[num/10] + small_numbers[num % 10];
+	
+	if (num >= 20){
+		total += multiples_of_ten[num / 10] + small_numbers[num % 10];
 	} else {
 		total += small_numbers[num];
 	}
@@ -86,7 +85,7 @@ unsigned int sum_letters_one_to(unsigned int n){
 }
 
 int main(){
-	assert(sum_letters_one_to(5) == 19);
+	assert(sum_letters_one_to(  5) == 19);
 	assert(letters_in_english( 42) ==  8);
 	assert(letters_in_english(342) == 23);
 	assert(letters_in_english(115) == 20);
