@@ -9,7 +9,7 @@ A palindromic number reads the same both ways. The largest palindrome made from 
 Find the largest palindrome made from the product of two 3-digit numbers.
 */
 
-//Nicked from http://stackoverflow.com/a/101613/5252017
+//The method of squares, nicked from http://stackoverflow.com/a/101613/5252017
 int powi(int base, int exp){
 	int result = 1;
 	while (exp){

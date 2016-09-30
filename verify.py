@@ -143,6 +143,7 @@ def main(args):
 	except ImportError as e:
 		logger.critical("No language file '{}/__init__.py' found.".format(
 			args["<language>"]))
+		logger.exception(e)
 		return
 	else:
 		lang.name = args["<language>"]
