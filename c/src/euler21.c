@@ -4,25 +4,16 @@
 #include <math.h>
 #include <stdbool.h>
 
-unsigned sum_proper_divisors(unsigned n){
-	if (n <= 1){
-		return 0;
-	}
-	//Add the 1 manually to avoid adding the pair (1, n) as part of the loop.
-	unsigned sum = 1;
-	unsigned limit = (unsigned) sqrt(n);
-	for (unsigned i = 2; i < limit; i++){
-		if (n % i == 0){
-			sum += i;
-			sum += n/i;
-		}
-	}
-	//Only count exact sqrts once
-	if (limit * limit == n){
-		sum += limit;
-	}
-	return sum;
-}
+#include "number_theory.c"
+
+/*
+Let d(n) be defined as the sum of proper divisors of n (numbers less than n which divide evenly into n).
+If d(a) = b and d(b) = a, where a ≠ b, then a and b are an amicable pair and each of a and b are called amicable numbers.
+
+For example, the proper divisors of 220 are 1, 2, 4, 5, 10, 11, 20, 22, 44, 55 and 110; therefore d(220) = 284. The proper divisors of 284 are 1, 2, 4, 71 and 142; so d(284) = 220.
+
+Evaluate the sum of all the amicable numbers under 10000.
+*/
 
 bool is_amicable(unsigned n){
 	unsigned divsum = sum_proper_divisors(n);

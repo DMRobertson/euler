@@ -100,7 +100,7 @@ int max_line_product(size_t length, matrix* grid){
 			max_product = max(max_product, diag_se_prod(length, grid, x, y));
 		}
 	}
-	int xmax, ymax;
+	
 	//4. Diagonal lines South-West
 	for (size_t x = length; x < grid->width; x++){
 		for (size_t y = 0; y + length < grid->height; y++){
