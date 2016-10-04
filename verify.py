@@ -1,17 +1,17 @@
 #! /usr/bin/env python3
 """
 Check that the solutions for a given language are valid.
-The language-specific calls are implemented in /LANGUAGE/__init__.py
+The language-specific calls are implemented in /language/__init__.py
 
 Usage:
     verify.py [options] <language>
 
 Arguments:
-	
+    language              The language to verify solutions to.
 
 Options:
-    -d, --debug           Don't verify solution output.
     -c, --clean           Remove previous builds and any intermediate files.
+    -d, --debug           Don't verify solution output.
     -h, --help            Display this help message.
     --noprep              Skip the preparation (compiling/building) step.
     -p, --problem=number  Verify a specific problem only.
@@ -172,8 +172,9 @@ def main(args):
 			expected = [(index, answers[index - 1])]
 		except IndexError:
 			logger.critical("Can't verify problem {}: no answer in resource/answers.txt".format(
-				args['problem']
+				args['--problem']
 			))
+			return
 	else:
 		expected = enumerate(answers, start=1)
 	
