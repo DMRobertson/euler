@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 size_t ceildiv(size_t num, int div){
 	// return the ceiling of (num/div) == floor ((num + div - 1)/div)
@@ -15,6 +16,9 @@ typedef struct packed_bool_array {
 	unsigned char* array;
 } barray;
 
+void bsetall(barray* data, unsigned char value){
+	memset(data->array, value, data->charlength);
+}
 
 barray* bool_array(size_t length){
 	/* Efficiently store an array of booleans by packing as many bools as we can get away with into a char. */
@@ -23,11 +27,8 @@ barray* bool_array(size_t length){
 	output->boollength = length;
 	output->charlength = charlength;
 	output->array = malloc( sizeof(unsigned char) * charlength );
+	bsetall(output, 0);
 	return output;
-}
-
-void bsetall(barray* data, unsigned char value){
-	memset(data->array, value, data->charlength);
 }
 
 bool bget(barray* data, size_t index){
@@ -47,4 +48,16 @@ void bset(barray* data, size_t index, bool value){
 	} else {
 		data->array[index] &= (mask ^ -1); //I thought this would be -mask but apparently not!
 	}
+}
+
+void bprint(const barray* const data){
+	for (size_t i = 0; i > data->charlength; i++){
+		size_t mask = 1;
+		for (size_t j = 0; j < CHAR_BIT; j++){
+			char bit = mask & data->array[i];
+			putc(bit ? '1' : '0', stdout);
+			mask <<= 1;
+		}
+	}
+	putc('\n', stdout);
 }
