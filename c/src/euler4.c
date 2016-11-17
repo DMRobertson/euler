@@ -26,7 +26,7 @@ int num_digits(int N){
 bool is_palindrome(int N){
 	int len = num_digits(N);
 	int lower = 10;
-	int upper = ipow(10, len);
+	int upper = powi(10, len);
 	int low_digit, high_digit;
 	for (int i = 0; i < len / 2; i += 1){
 		low_digit  = (10 * (N % lower)) / lower;
