@@ -11,8 +11,9 @@ Arguments:
 
 Options:
     -c, --clean           Remove previous builds and any intermediate files.
-    -d, --debug           Don't verify solution output.
+    -d, --debug           Run, but don't verify a solution.
     -h, --help            Display this help message.
+    -b, --build-only      Don't attempt to run a solution.
     --noprep              Skip the preparation (compiling/building) step.
     -p, --problem=number  Verify a specific problem only.
     -v, --verbose         Print all output to screen as well as log.
@@ -55,7 +56,7 @@ def setup_logging(lang, args):
 	return logger
 
 def get_answers(args):
-	if args['--debug']:
+	if args['--debug'] or args['--build-only']:
 		return DummyList()
 	with open('resource/answers.txt', 'rb') as f:
 		f.readline()
@@ -86,6 +87,11 @@ def verify(index, answer, lang, args, logger):
 		else:
 			logger.debug("Problem {} prepared successfully. Output and error was:\n{}".format(
 			index, stdout_err.rstrip() ))
+	
+	if args['--build-only']:
+		logger.debug("Not running build for Problem {}".format(index))
+		return
+	
 	
 	#2. Time the run.
 	with Timer() as t:
@@ -167,6 +173,7 @@ def main(args):
 			logger.exception("Couldn't interpret '--problem {}' as a positive integer".format(
 				args['--problem']))
 			return
+		
 		
 		try:
 			expected = [(index, answers[index - 1])]
