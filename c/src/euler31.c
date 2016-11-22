@@ -56,8 +56,6 @@ int main(){
 	
 	unsigned count = 0;
 	while (stack_top != NULL){
-		printf("%p: Make %03d, using at most %03d, %p)\n", stack_top, stack_top->remaining, weights[stack_top->largest_avail_idx], stack_top->previous);
-		// getc(stdin);
 		if (stack_top->remaining == 0){
 			count++;
 		}
