@@ -1,6 +1,20 @@
 #include <math.h>
 #include <stdbool.h>
 
+bool equal_fractions(unsigned num_a, unsigned den_a, unsigned num_b, unsigned den_b){
+	return num_a * den_b == num_b * den_a;
+}
+
+unsigned gcd(unsigned a, unsigned b){
+	unsigned temp;
+	while (b){
+		temp = a % b;
+		a = b;
+		b = temp;
+	}
+	return a;
+}
+
 unsigned sum_proper_divisors(unsigned n){
 	if (n <= 1){
 		return 0;
