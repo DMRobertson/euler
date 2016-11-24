@@ -14,7 +14,7 @@ def get_prepare_argv(index, source):
 			extras = []
 	
 	return ["gcc",
-		"-Wall", "-Wextra", "-Werror", "-std=c99",
+		"-Wall", "-Wextra", "-std=c99",
 		"-g",
 		"-o", common.target(index),
 		source,

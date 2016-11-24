@@ -61,3 +61,8 @@ void bprint(const barray* const data){
 	}
 	putc('\n', stdout);
 }
+
+void bfree(barray* const data){
+	free(data->array);
+	free(data);
+}
