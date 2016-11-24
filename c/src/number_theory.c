@@ -68,3 +68,14 @@ barray* sieve_of_erastosthenes(size_t limit){
 	}
 	return sieve;
 };
+
+unsigned digit_length(unsigned n, unsigned base){
+	assert(base > 1);
+	unsigned accumlator = base;
+	unsigned length = 1;
+	while (accumlator <= n){
+		accumlator *= base;
+		length++;
+	}
+	return length;
+}
