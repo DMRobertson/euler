@@ -1,6 +1,10 @@
+#ifndef NUMBER_THEORY_
+#define NUMBER_THEORY_
+
 #include <math.h>
 #include <stdbool.h>
 #include <assert.h>
+
 #include "packed_bool_array.c"
 
 bool equal_fractions(unsigned num_a, unsigned den_a, unsigned num_b, unsigned den_b){
@@ -69,13 +73,4 @@ barray* sieve_of_erastosthenes(size_t limit){
 	return sieve;
 };
 
-unsigned digit_length(unsigned n, unsigned base){
-	assert(base > 1);
-	unsigned accumlator = base;
-	unsigned length = 1;
-	while (accumlator <= n){
-		accumlator *= base;
-		length++;
-	}
-	return length;
-}
+#endif //NUMBER_THEORY_

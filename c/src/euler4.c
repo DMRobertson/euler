@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <assert.h>
 #include <math.h>
-#include "integer_powers.c"
+#include "integer_maths.c"
 /*
 A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 × 99.
 

@@ -1,13 +1,12 @@
+#ifndef PACKED_BOOL_ARRAY_
+#define PACKED_BOOL_ARRAY_
+
 #include <limits.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-
-size_t ceildiv(size_t num, int div){
-	// return the ceiling of (num/div) == floor ((num + div - 1)/div)
-	return (num + div - 1) / div;
-}
+#include "integer_maths.c"
 
 typedef struct packed_bool_array {
 	// An array of booleans stored in the bits of chars in memeory
@@ -66,3 +65,5 @@ void bfree(barray* const data){
 	free(data->array);
 	free(data);
 }
+
+#endif //PACKED_BOOL_ARRAY_

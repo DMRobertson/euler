@@ -4,7 +4,7 @@
 #include <math.h>
 #include <assert.h>
 
-#include "integer_powers.c"
+#include "integer_maths.c"
 
 /* Surprisingly there are only three numbers that can be written as the sum of fourth powers of their digits:
 
