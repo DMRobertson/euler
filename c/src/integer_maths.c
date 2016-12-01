@@ -33,4 +33,14 @@ unsigned digit_length(unsigned n, unsigned base){
 	return length;
 }
 
+unsigned largest_power_below(unsigned n, unsigned base){
+	assert(base > 1);
+	unsigned accumlator = base;
+	while (accumlator <= n){
+		accumlator *= base;
+	}
+	accumlator /= base;
+	return(accumlator);
+}
+
 #endif // INTEGER_MATHS_
