@@ -2,6 +2,7 @@
 #define INTEGER_MATHS_
 
 #include <stdlib.h>
+#include <stdbool.h>
 #include <assert.h>
 
 size_t ceildiv(size_t num, int div){
@@ -33,14 +34,26 @@ unsigned digit_length(unsigned n, unsigned base){
 	return length;
 }
 
-unsigned largest_power_below(unsigned n, unsigned base){
+unsigned smallest_power_above(unsigned n, unsigned base){
 	assert(base > 1);
-	unsigned accumlator = base;
+	unsigned accumlator = 1;
 	while (accumlator <= n){
 		accumlator *= base;
 	}
-	accumlator /= base;
 	return(accumlator);
+}
+
+unsigned largest_power_below(unsigned n, unsigned base){
+	return smallest_power_above(n, base) / base;
+}
+
+void record_digits(unsigned number, unsigned base, unsigned* digits){
+	// C standard imposes that (unsigned) ints are at least 16 bits long
+	assert(base > 1 && base <= 16);
+	while (number){
+		*digits |= 1 << (number % base);
+		number /= base;
+	}
 }
 
 #endif // INTEGER_MATHS_

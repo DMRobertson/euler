@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <assert.h>
+#include "integer_maths.c"
 
 /*
 We shall say that an n-digit number is pandigital if it makes use of all the digits 1 to n exactly once; for example, the 5-digit number, 15234, is 1 through 5 pandigital.
@@ -19,13 +20,6 @@ So n+m-1=k; then n + m + k = 2k + 1 = 9, which means that k = 4 and n+m = 5.
 We only need to look at 4-digit numbers 1000...9999 (of which there are 9000) and try to factorise them as 1 digit * 4-digit or 2-digit * 3-digit.
 */
 
-void record_digits(unsigned number, unsigned* digits){
-	while (number){
-		*digits |= 1 << (number % 10);
-		number /= 10;
-	}
-}
-
 bool has_pandigital_factorisation(unsigned target){
 	for (unsigned smaller = 1; smaller < 100; smaller++){
 		unsigned remainder = target % smaller;
@@ -39,9 +33,9 @@ bool has_pandigital_factorisation(unsigned target){
 		
 		// ten bits for digits 9...0
 		unsigned digits = 0b0000000000;
-		record_digits(target,   &digits);
-		record_digits(smaller,  &digits);
-		record_digits(quotient, &digits);
+		record_digits(target,   10, &digits);
+		record_digits(smaller,  10, &digits);
+		record_digits(quotient, 10, &digits);
 		// all digits except 0
 		if (digits == 0b1111111110){
 			return true;
