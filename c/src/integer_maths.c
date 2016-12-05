@@ -56,4 +56,11 @@ void record_digits(unsigned number, unsigned base, unsigned* digits){
 	}
 }
 
+bool is_pandigital_one_to(unsigned number, unsigned base, unsigned limit){
+	unsigned digits = 0;
+	record_digits(number, base, &digits);
+	unsigned mask = (1 << (limit + 1)) - 2;
+	return digits == mask;
+}
+
 #endif // INTEGER_MATHS_
