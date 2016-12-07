@@ -28,6 +28,7 @@ unsigned digit_length(unsigned n, unsigned base){
 	unsigned accumlator = base;
 	unsigned length = 1;
 	while (accumlator <= n){
+		//TODO: detect overflow when multiplying accumlator
 		accumlator *= base;
 		length++;
 	}
@@ -45,6 +46,21 @@ unsigned smallest_power_above(unsigned n, unsigned base){
 
 unsigned largest_power_below(unsigned n, unsigned base){
 	return smallest_power_above(n, base) / base;
+}
+
+unsigned nth_digit(unsigned number, unsigned base, unsigned target_digit){
+	assert(base > 1);
+	unsigned cmp = base;
+	unsigned digits = 1;
+	while (cmp <= number){
+		cmp *= base;
+		digits++;
+	}
+	while (digits > target_digit){
+		number /= base;
+		digits--;
+	}
+	return number % base;
 }
 
 void record_digits(unsigned number, unsigned base, unsigned* digits){
