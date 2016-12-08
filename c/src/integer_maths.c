@@ -79,4 +79,8 @@ bool is_pandigital_one_to(unsigned number, unsigned base, unsigned limit){
 	return digits == mask;
 }
 
+bool is_pandigital(unsigned number, unsigned base){
+	return is_pandigital_one_to(number, base, digit_length(number, base));
+}
+
 #endif // INTEGER_MATHS_
