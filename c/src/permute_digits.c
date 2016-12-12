@@ -39,11 +39,11 @@ pstate* pnew(const size_t length, const char* const digits){
 	return state;
 }
 
-unsigned interpret(pstate* state){
-	unsigned sum = 0;
+long unsigned interpret(pstate* state){
+	long unsigned sum = 0;
 	for (size_t i = 0; i < state->length; i++){
 		sum *= 10;
-		sum += (unsigned) state->digits[i];
+		sum += state->digits[i];
 	}
 	return sum;
 }

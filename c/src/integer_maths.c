@@ -63,7 +63,7 @@ unsigned nth_digit(unsigned number, unsigned base, unsigned target_digit){
 	return number % base;
 }
 
-void record_digits(unsigned number, unsigned base, unsigned* digits){
+void record_digits(long unsigned number, unsigned base, unsigned* digits){
 	// C standard imposes that (unsigned) ints are at least 16 bits long
 	assert(base > 1 && base <= 16);
 	while (number){
@@ -75,7 +75,20 @@ void record_digits(unsigned number, unsigned base, unsigned* digits){
 bool is_pandigital_one_to(unsigned number, unsigned base, unsigned limit){
 	unsigned digits = 0;
 	record_digits(number, base, &digits);
+	// get 11111...11 as 2^k - 1 for some k. remove the 
+	// Example: For 1-to-5 pandigital
+	// 1000000 is 1 << 6
+	//  111111 subtract 1 to get ones below
+	//  111110 subtract 1 to remove the zero
 	unsigned mask = (1 << (limit + 1)) - 2;
+	return digits == mask;
+}
+
+bool is_pandigital_zero_to(long unsigned number, unsigned base, unsigned limit){
+	unsigned digits = 0;
+	record_digits(number, base, &digits);
+	// TODO: the only difference is a -1 instead of a -2 on this line. Is there a way of having an optional boolean argument 'from_zero'?
+	unsigned mask = (1 << (limit + 1)) - 1;
 	return digits == mask;
 }
 
