@@ -107,20 +107,28 @@ def verify(index, answer, lang, args, logger):
 				index, e))
 			logger.debug("Traceback was:", exc_info=exc_info())
 			return
-		else:
-			# Don't bother checking the output if we're just debugging.
-			logger.debug("Problem {} ran successfully".format(index))
-			if args['--debug']:
-				logger.info("Problem {}'s output was: \n{}".format(
-					index, result.rstrip()))
-				logger.info("Skipping verification")
-				return
+		
+	#3. Did the program finish within a minute?
+	logger.debug("Problem {} completed successfully".format(index))
+	if t.elapsed > 60:
+		logger.warn("Problem {} took too long ({:.2f}sec) to run".format(
+			index, t.elapsed))
+	else:
+		logger.debug("Problem {} ran in {:.2f}sec".format(
+			index, t.elapsed))
+	logger.debug("Problem {}'s output was: \n{}".format(
+		index, result.rstrip()))
 	
-	#3. Is the result an integer?
+	#4. Don't bother checking the output if we're just debugging.
+	if args['--debug']:
+		logger.info("Skipping verification")
+		return
+	
+	#5. Is the result an integer?
 	try:
 		result = int(result)
 	except Exception as e:
-		logger.error("Couldn't format problem {} answer: {}".format(
+		logger.error("Couldn't interpret problem {} answer as an integer: {}".format(
 			index, e))
 		return
 	
@@ -131,15 +139,6 @@ def verify(index, answer, lang, args, logger):
 	else:
 		logger.debug("Problem {} gave the correct answer".format(
 			index))
-		
-	#5. Was the answer computed within a minute?
-	if t.elapsed > 60:
-		logger.warn("Problem {} took too long ({:.2f}sec) to run".format(
-			index, t.elapsed))
-	else:
-		logger.debug("Problem {} ran in {:.2f}sec".format(
-			index, t.elapsed))
-
 
 def main(args):
 	#1. Check to see if we support the given language.
