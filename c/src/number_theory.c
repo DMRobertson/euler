@@ -73,4 +73,27 @@ barray* sieve_of_erastosthenes(size_t limit){
 	return sieve;
 };
 
+unsigned num_distinct_primes_dividing(unsigned n){
+	unsigned count = 0;
+	bool divided = false;
+	while (n % 2 == 0){
+		n >>= 1;
+		divided = true;
+	}
+	count += divided;
+	
+	unsigned divisor = 3;
+	while (n > 1){
+		divided = false;
+		while (n % divisor == 0){
+			n /= divisor;
+			divided = true;
+		}
+		count += divided;
+		divisor += 2;
+	}
+	
+	return count;
+}
+
 #endif //NUMBER_THEORY_

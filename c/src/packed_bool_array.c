@@ -30,6 +30,8 @@ barray* bool_array(size_t length){
 	return output;
 }
 
+//TODO: barray* bresize(barray* array);
+
 bool bget(barray* data, size_t index){
 	size_t bitnum = index % CHAR_BIT;
 	index /= CHAR_BIT;
