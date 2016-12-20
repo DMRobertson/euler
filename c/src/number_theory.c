@@ -73,24 +73,18 @@ barray* sieve_of_erastosthenes(size_t limit){
 	return sieve;
 };
 
-unsigned num_distinct_primes_dividing(unsigned n){
-	unsigned count = 0;
-	bool divided = false;
-	while (n % 2 == 0){
-		n >>= 1;
-		divided = true;
-	}
-	count += divided;
-	
-	unsigned divisor = 3;
-	while (n > 1){
-		divided = false;
-		while (n % divisor == 0){
-			n /= divisor;
+unsigned num_distinct_primes_dividing(unsigned n, size_t* small_primes){
+	unsigned count = 0;	
+	size_t* divisor = small_primes;
+	while (n > 1 && *divisor != 0){
+		
+		bool divided = false;
+		while (n % *divisor == 0){
+			n /= *divisor;
 			divided = true;
 		}
 		count += divided;
-		divisor += 2;
+		divisor++;
 	}
 	
 	return count;

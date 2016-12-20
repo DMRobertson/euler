@@ -7,6 +7,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "integer_maths.c"
+#include "vector.c"
 
 typedef struct packed_bool_array {
 	// An array of booleans stored in the bits of chars in memeory
@@ -25,7 +26,7 @@ barray* bool_array(size_t length){
 	barray* output = malloc(sizeof(barray));
 	output->boollength = length;
 	output->charlength = charlength;
-	output->array = malloc( sizeof(unsigned char) * charlength );
+	output->array = calloc( charlength, sizeof(unsigned char));
 	bsetall(output, 0);
 	return output;
 }
@@ -66,6 +67,17 @@ void bprint(const barray* const data){
 void bfree(barray* const data){
 	free(data->array);
 	free(data);
+}
+
+
+vector* bgather(barray* data){
+	vector* indices = vnew(10);
+	for (size_t index = 0; index < data->boollength; index++){
+		if (bget(data, index)){
+			vpush(indices, index);
+		}
+	}
+	return indices;
 }
 
 #endif //PACKED_BOOL_ARRAY_
