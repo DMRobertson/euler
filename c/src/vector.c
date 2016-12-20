@@ -1,3 +1,6 @@
+#ifndef VECTOR_
+#define VECTOR_
+
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
@@ -54,3 +57,5 @@ bool vcontains_sorted(vector* table, size_t value){
 	void* pointer = bsearch(&value, table->data, table->length, sizeof(size_t), cmp_size_t);
 	return pointer != NULL;
 }
+
+#endif //VECTOR_

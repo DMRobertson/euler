@@ -1,3 +1,6 @@
+#ifndef PERMUTE_DIGITS_
+#define PERMUTE_DIGITS_
+
 #include <stdio.h>
 #include <limits.h>
 #include <assert.h>
@@ -108,3 +111,5 @@ void pfree(pstate* state){
 	free(state->direction);
 	free(state);
 }
+
+#endif //PERMUTE_DIGITS_
