@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
+#include <string.h>
 
 size_t ceildiv(size_t num, int div){
 	// return the ceiling of (num/div) == floor ((num + div - 1)/div)
@@ -70,6 +71,26 @@ void record_digits(long unsigned number, unsigned base, unsigned* digits){
 		*digits |= 1 << (number % base);
 		number /= base;
 	}
+}
+
+unsigned char* count_digits(long unsigned number, unsigned base){
+	assert(base > 1);
+	unsigned char* counts = calloc( base, sizeof(unsigned char) );
+	while (number){
+		unsigned digit = number % base;
+		counts[digit]++;
+		number /= base;
+	}
+	return counts;
+}
+
+bool equal_digit_counts(unsigned char* first, unsigned char* second, unsigned base){
+	for(size_t i = 0; i < base; i++){
+		if (first[i] != second[i]){
+			return false;
+		}
+	}
+	return true;
 }
 
 bool is_pandigital_one_to(unsigned number, unsigned base, unsigned limit){
