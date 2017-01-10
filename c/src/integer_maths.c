@@ -96,11 +96,12 @@ bool equal_digit_counts(unsigned char* first, unsigned char* second, unsigned ba
 bool is_pandigital_one_to(unsigned number, unsigned base, unsigned limit){
 	unsigned digits = 0;
 	record_digits(number, base, &digits);
-	// get 11111...11 as 2^k - 1 for some k. remove the 
+	// get 11111...11 as 2^k - 1 for some k. Then remove two to get the mask
 	// Example: For 1-to-5 pandigital
 	// 1000000 is 1 << 6
 	//  111111 subtract 1 to get ones below
-	//  111110 subtract 1 to remove the zero
+	//  111110 subtract 1 to remove the bit corresponding to the zero digit
+	//  543210 corresponding digits
 	unsigned mask = (1 << (limit + 1)) - 2;
 	return digits == mask;
 }

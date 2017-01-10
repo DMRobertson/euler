@@ -85,7 +85,7 @@ tri_array* load_triangle (char const * filepath){
 
 int largest_sum(tri_array* numbers){
 	for (size_t depth = numbers->width - 1; depth > 0; depth--){
-		for (size_t index = 0; index <= depth; index++){
+		for (size_t index = 0; index < depth; index++){
 			int max_descendant = max(
 				taddr(numbers, depth, index),
 				taddr(numbers, depth, index + 1)

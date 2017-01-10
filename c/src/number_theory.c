@@ -57,7 +57,8 @@ bool is_prime(int n){
 }
 
 barray* sieve_of_erastosthenes(size_t limit){
-	barray* sieve = bool_array(limit);
+	//The limit is inclusive: 0 <= index <= limit
+	barray* sieve = bool_array(limit + 1);
 	bsetall(sieve, -1); //unsigned -1 has a 1 in every bit
 	bset(sieve, 0, false);
 	bset(sieve, 1, false);

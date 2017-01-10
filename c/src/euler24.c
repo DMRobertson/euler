@@ -27,7 +27,7 @@ typedef struct alphabet {
 void discard_letter(char* letters, size_t discard, size_t size){
 	// turn an array A1, ..., A_{discard}, ..., A_{size} into
 	// A1, ..., A_{discard - 1}, A_{discard+1} ..., A_{size}, A_{size}
-	for (size_t index = discard; index < size; index++){
+	for (size_t index = discard; index < size - 1; index++){
 		letters[index] = letters[index+1];
 	}
 }
@@ -36,7 +36,7 @@ alphabet* zero_to(size_t num){
 	assert( 0 < num && num < 10);
 	alphabet* out = malloc(sizeof(alphabet));
 	out->size = num + 1;
-	out->letters = malloc(sizeof(char) * num);
+	out->letters = calloc(out->size, sizeof(char));
 	for (size_t i=0; i <= num; i++){
 		out->letters[i] = '0' + i;
 	}
