@@ -10,8 +10,9 @@ Arguments:
     language              The language to verify solutions to.
 
 Options:
+    -a, --accept-any      Don't verify that the solution gives the correct answer.
     -c, --clean           Remove previous builds and any intermediate files.
-    -d, --debug           Run, but don't verify a solution.
+    -d, --debug           Run a solution in debug mode.
     -h, --help            Display this help message.
     -b, --build-only      Don't attempt to run a solution.
     --noprep              Skip the preparation (compiling/building) step.
@@ -56,7 +57,7 @@ def setup_logging(lang, args):
 	return logger
 
 def get_answers(args):
-	if args['--debug'] or args['--build-only']:
+	if args['--accept-any'] or args['--build-only']:
 		return DummyList()
 	with open('resource/answers.txt', 'rb') as f:
 		f.readline()
@@ -120,8 +121,8 @@ def verify(index, answer, lang, args, logger):
 		index, result.rstrip()))
 	
 	#4. Don't bother checking the output if we're just debugging.
-	if args['--debug']:
-		logger.debug("Skipping verification")
+	if args['--accept-any']:
+		logger.debug("Skipping verification: any answer accepted")
 		return
 	
 	#5. Is the result an integer?
@@ -187,7 +188,7 @@ def main(args):
 		try:
 			expected_answers[index] = answers[index - 1]
 		except IndexError:
-			logger.critical("Can't verify problem {}: no answer in resource/answers.txt. Use --debug to disable answer checking".format(
+			logger.critical("Can't verify problem {}: no answer in resource/answers.txt. Use --accept-any to disable answer checking".format(
 				index))
 	
 	#4. Time to verify
