@@ -96,7 +96,7 @@ def verify(index, answer, lang, args, logger):
 	#2. Time the run.
 	with Timer() as t:
 		try:
-			result = lang.run(index, logger)
+			result = lang.run(index, logger, debug=args['--debug'])
 		except CalledProcessError as e:
 			logger.critical("Could not run problem {}: {}".format(
 				index, e))
@@ -121,7 +121,7 @@ def verify(index, answer, lang, args, logger):
 	
 	#4. Don't bother checking the output if we're just debugging.
 	if args['--debug']:
-		logger.info("Skipping verification")
+		logger.debug("Skipping verification")
 		return
 	
 	#5. Is the result an integer?
@@ -173,31 +173,28 @@ def main(args):
 				args['--problem']))
 			return
 		
-		
-		try:
-			expected = [(index, answers[index - 1])]
-		except IndexError:
-			logger.critical("Can't verify problem {}: no answer in resource/answers.txt".format(
-				args['--problem']
-			))
+		if not lang.implemented(index):
+			logger.critical("Language {} has no solution implemented for problem {}".format(
+				args['--lang'], args['--problem']))
 			return
-	else:
-		expected = enumerate(answers, start=1)
+		
+		indices = [index]
+	else :
+		indices = lang.implemented_indices()
+	
+	expected_answers = {}
+	for index in indices:
+		try:
+			expected_answers[index] = answers[index - 1]
+		except IndexError:
+			logger.critical("Can't verify problem {}: no answer in resource/answers.txt. Use --debug to disable answer checking".format(
+				index))
 	
 	#4. Time to verify
 	if lang.prepare is None:
 		logger.info("Language {} has no preparation step.".format(
 			lang.name))
-	for index, answer in expected:
-		if not lang.implemented(index):
-			if args['--problem']:
-				reporter = logger.critical
-			else:
-				reporter = logger.warning
-			reporter("Problem {} is not implemented for {}".format(
-				index, lang.name))
-			continue
-				
+	for index, answer in expected_answers.items():
 		verify(index, answer, lang, args, logger)
 	
 	logger.info("Verification script complete")

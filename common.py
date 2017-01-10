@@ -1,6 +1,7 @@
 """Helper functions to implement per-language calls"""
 
 import os
+import re
 from subprocess import check_output, STDOUT
 
 WINDOWS = os.name == "windows"
@@ -8,6 +9,14 @@ WINDOWS = os.name == "windows"
 def implemented(index, extension):
 	return os.path.isfile(source(index, extension))
 	
+def implemented_indices(extension):
+	pattern = re.compile(r"euler(\d+)" + extension + "$")
+	for filename in os.listdir("src"):
+		match = pattern.match(filename)
+		if match is not None:
+			index = int(match.group(1))
+			yield index
+
 def setup(compiled=True):
 	os.makedirs('log',    exist_ok=True)
 	if compiled:
@@ -31,10 +40,10 @@ def prepare(index, logger, extension=None, get_argv=None):
 	stdout_err = check_output(argv, stderr=STDOUT)
 	return stdout_err.decode('utf8')
 
-def run(index, logger=None, get_argv=None):
+def run(index, logger, debug=False, get_argv=None):
 	if get_argv is None:
 		argv = target(index)
 	else:
-		argv = get_argv(index)
+		argv = get_argv(index, debug)
 	stdout_err = check_output(argv, stderr=STDOUT)
 	return stdout_err.decode('utf8')

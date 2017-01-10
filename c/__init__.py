@@ -20,9 +20,17 @@ def get_prepare_argv(index, source):
 		source,
 	] + extras
 
-implemented = partial(common.implemented, extension='.c')
-clean   = common.clean
-setup   = common.setup
-prepare = partial(common.prepare,
-	extension='.c', get_argv=get_prepare_argv)
-run     = common.run
+def get_run_argv(index, debug):
+	if debug:
+		args = ["valgrind", "-q", "--error-exitcode=1", "--error-limit=yes"]
+	else:
+		args = []
+	args += [common.target(index)]
+	return args
+
+implemented         = partial(common.implemented, extension='.c')
+implemented_indices = partial(common.implemented_indices, extension='.c')
+clean               = common.clean
+setup               = common.setup
+prepare             = partial(common.prepare, extension='.c', get_argv=get_prepare_argv)
+run                 = partial(common.run, get_argv=get_run_argv)
