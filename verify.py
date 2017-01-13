@@ -10,19 +10,21 @@ Arguments:
     language              The language to verify solutions to.
 
 Options:
-    -a, --accept-any      Don't verify that the solution gives the correct answer.
-    -c, --clean           Remove previous builds and any intermediate files.
-    -d, --debug           Run a solution in debug mode.
-    -h, --help            Display this help message.
-    -b, --build-only      Don't attempt to run a solution.
-    --noprep              Skip the preparation (compiling/building) step.
-    -p, --problem=number  Verify a specific problem only.
-    -v, --verbose         Print all output to screen as well as log.
+    -a, --accept-any       Don't verify that the solution gives the correct answer.
+    -b, --build-only       Don't attempt to run a solution.
+    -c, --clean            Remove previous builds and any intermediate files.
+    -d, --debug            Run a solution in debug mode.
+    -h, --help             Display this help message.
+    -t, --summarise-times  Display the min, max, mean, median and total solution runtime.
+    -r, --run-only         Skip the preparation (compiling/building) step.
+    -p, --problem=number   Verify a specific problem only.
+    -v, --verbose          Print all output to screen as well as log.
 """
 
 #TODO --timeout         Stop the problem from running if it takes over a minute. Without this option we run until completion.
 
 import logging
+import statistics
 
 from codecs       import decode
 from contexttimer import Timer
@@ -68,49 +70,60 @@ class DummyList:
 	def __getitem__(self, key):
 		return None
 
-def verify(index, answer, lang, args, logger):
+def verify(index, expected, lang, args, logger):
 	"""Verify that <lang>'s solution to problem <index> is the expected <answer>.
 	Use <logger> for reporting sucess or failure.
 	The command line <args> are passed on too.
 	"""
+	result = {}
 	#1. Prepare if neccessary.
-	if args['--noprep']:
-		logger.debug("Skipping preparation for problem {}".format(
-			index))
-	elif lang.prepare is not None:
-		try:
-			stdout_err = lang.prepare(index, logger)
-		except CalledProcessError as e:
-			logger.critical("Could not prepare problem {}: {}".format(
-				index, e))
-			logger.debug("Prepare stdout/err was:\n" + e.output.decode('utf8').rstrip())
-			return
+	if lang.prepare is not None:
+		if args['--run-only']:
+			logger.debug("Not building problem {}".format(
+				index))
 		else:
-			logger.debug("Problem {} prepared successfully. Output and error was:\n{}".format(
-			index, stdout_err.rstrip() ))
+			try:
+				stdout_err = lang.prepare(index, logger)
+			except CalledProcessError as e:
+				logger.critical("Could not prepare problem {}: {}".format(
+					index, e))
+				output = e.output.decode('utf8').rstrip()
+				logger.debug("Prepare stdout/err was:\n" + output)
+				result["prepare_error"] = output
+				return result
+			else:
+				output = stdout_err.rstrip()
+				logger.debug("Problem {} prepared successfully. Output and error was:\n{}".format(
+				index, output))
+				result["prepare_success"] = output
 	
 	if args['--build-only']:
-		logger.debug("Not running build for Problem {}".format(index))
-		return
-	
+		logger.debug("Not running Problem {}".format(index))
+		return result
 	
 	#2. Time the run.
 	with Timer() as t:
 		try:
-			result = lang.run(index, logger, debug=args['--debug'])
+			answer = lang.run(index, logger, debug=args['--debug'])
 		except CalledProcessError as e:
 			logger.critical("Could not run problem {}: {}".format(
 				index, e))
-			logger.debug("Run stdout/err was:\n" + e.output.decode('utf8').rstrip())
-			return
+			output = e.output.decode('utf8').rstrip()
+			logger.debug("Run stdout/err was:\n" + output)
+			result["run_error"] = output
+			return result
 		except Exception as e:
 			logger.critical("Could not run problem {}: {}".format(
 				index, e))
 			logger.debug("Traceback was:", exc_info=exc_info())
-			return
-		
+			return result
+	
+	answer = answer.rstrip()
+	result["answer"] = answer
+	
 	#3. Did the program finish within a minute?
 	logger.debug("Problem {} completed successfully".format(index))
+	result["time"] = t.elapsed
 	if t.elapsed > 60:
 		logger.warn("Problem {} took too long ({:.2f}sec) to run".format(
 			index, t.elapsed))
@@ -118,28 +131,32 @@ def verify(index, answer, lang, args, logger):
 		logger.debug("Problem {} ran in {:.2f}sec".format(
 			index, t.elapsed))
 	logger.debug("Problem {}'s output was: \n{}".format(
-		index, result.rstrip()))
+		index, answer.rstrip()))
 	
 	#4. Don't bother checking the output if we're just debugging.
 	if args['--accept-any']:
+		result["correct"] = None
 		logger.debug("Skipping verification: any answer accepted")
-		return
+		return result
 	
-	#5. Is the result an integer?
+	#4. Is the result an integer?
 	try:
-		result = int(result)
+		answer = int(answer)
 	except Exception as e:
+		result["correct"] = None
 		logger.error("Couldn't interpret problem {} answer as an integer: {}".format(
 			index, e))
-		return
+		return result
 	
-	#4. Is the answer correct?
-	if result != answer:
-		logger.error("Problem {} result: {!r} expected {!r}".format(
-			index, result, answer))
+	#5. Is the answer correct?
+	result["correct"] = answer == expected
+	if not result["correct"]:
+		logger.error("Problem {} answer: {!r} expected {!r}".format(
+			index, answer, expected))
 	else:
 		logger.debug("Problem {} gave the correct answer".format(
 			index))
+	return result
 
 def main(args):
 	#1. Check to see if we support the given language.
@@ -195,8 +212,24 @@ def main(args):
 	if lang.prepare is None:
 		logger.info("Language {} has no preparation step.".format(
 			lang.name))
+	results = {}
 	for index, answer in expected_answers.items():
-		verify(index, answer, lang, args, logger)
+		result = verify(index, answer, lang, args, logger)
+		if result is None:
+			result = {}
+		results[index] = result
+	
+	if args['--summarise-times']:
+		runtime_data = { index: result["time"] for index, result in results.items() }
+		runtimes = list(runtime_data.values())
+		
+		time_extractor = lambda x: x[1]
+		
+		print("min: Problem {} @ {:.2f}s".format( *min(runtime_data.items(), key=time_extractor) ) )
+		print("max: Problem {} @ {:.2f}s".format( *max(runtime_data.items(), key=time_extractor) ) )
+		print("mean: {:.2f}s".format( statistics.mean(runtimes) ) )
+		print("median: {:.2f}s".format( statistics.median(runtimes) ) )
+		print("total: {:.2f}s".format( sum(runtimes) ) )
 	
 	logger.info("Verification script complete")
 
