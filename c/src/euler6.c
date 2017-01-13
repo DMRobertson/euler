@@ -10,17 +10,17 @@ Hence the difference between the sum of the squares of the first ten natural num
 Find the difference between the sum of the squares of the first one hundred natural numbers and the square of the sum.
 */
 
-int square_sum_one_upto(int limit){
-	int sum = 0;
-	for (int i = 1; i <= limit; i++){
+unsigned square_sum_one_upto(unsigned limit){
+	unsigned sum = 0;
+	for (unsigned i = 1; i <= limit; i++){
 		sum += i;
 	}
 	return sum * sum;
 }
 
-int sum_squares_upto(int limit){
-	int sum = 0;
-	for (int i = 1; i <= limit; i++){
+int sum_squares_upto(unsigned limit){
+	unsigned sum = 0;
+	for (unsigned i = 1; i <= limit; i++){
 		sum += i * i;
 	}
 	return sum;
@@ -29,7 +29,7 @@ int sum_squares_upto(int limit){
 int main(){
 	assert(sum_squares_upto(10) == 385);
 	assert(square_sum_one_upto(10) == 3025);
-	int answer = square_sum_one_upto(100) - sum_squares_upto(100);
-	printf("%i\n", answer);
+	unsigned answer = square_sum_one_upto(100) - sum_squares_upto(100);
+	printf("%u\n", answer);
 	return 0;
 }

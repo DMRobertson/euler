@@ -9,11 +9,11 @@ By starting with 1 and 2, the first 10 terms will be:
 By considering the terms in the Fibonacci sequence whose values do not exceed four million, find the sum of the even-valued terms.
 */
 
-int sum_of_even_fibonacci_upto(int max){
-	int next;
-	int previous = 1;
-	int current  = 2;
-	int sum      = 0;
+unsigned sum_of_even_fibonacci_upto(unsigned max){
+	unsigned next;
+	unsigned previous = 1;
+	unsigned current  = 2;
+	unsigned sum      = 0;
 	while (current < max){
 		if (current % 2 == 0) {
 			sum += current;
@@ -26,6 +26,6 @@ int sum_of_even_fibonacci_upto(int max){
 }
 
 int main(){
-	printf( "%i\n", sum_of_even_fibonacci_upto(4e6) );
+	printf( "%u\n", sum_of_even_fibonacci_upto(4e6) );
 	return 0;
 }

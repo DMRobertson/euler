@@ -1,0 +1,3 @@
+- update previous files to have the right semantics: unsigned versus signed; size_t for array indices.
+- work out when to use void*, intptr_t, uintptr_t, ptrdiff_t etc
+- apparently converting signed ints to doubles (e.g. for the sqrt function) is fast (on intel hardware?) but unsigned to doubles is not fast. What I usually want is the floor of the sqrt of a number; maybe this can be implemented quickly for integers?

@@ -5,6 +5,8 @@
 #include <stdbool.h>
 #include <assert.h>
 
+// an automatically extendable array of size_t
+
 typedef struct vector {
 	size_t length;
 	size_t capacity;

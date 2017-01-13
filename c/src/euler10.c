@@ -27,6 +27,6 @@ size_t sum_sieve_of_erastosthenes(size_t limit){
 
 int main(){
 	assert(sum_sieve_of_erastosthenes(10) == 17);
-	printf("%li\n", sum_sieve_of_erastosthenes(2000000));
+	printf("%lu\n", sum_sieve_of_erastosthenes(2000000));
 	return 0;
 }

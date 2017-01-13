@@ -10,12 +10,12 @@ By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13, we can see that 
 What is the 10 001st prime number?
 */
 
-int nth_prime(int n){
+unsigned nth_prime(unsigned n){
 	if (n == 1){
 		return 2;
 	}
-	int candidate = 3;
-	int primes_found = 2;
+	unsigned candidate = 3;
+	unsigned primes_found = 2;
 	while (primes_found < n){
 		candidate += 2;
 		if (is_prime(candidate)){
@@ -27,6 +27,6 @@ int nth_prime(int n){
 
 int main(){
 	assert(nth_prime(6) == 13);
-	printf("%i\n", nth_prime(10001));
+	printf("%u\n", nth_prime(10001));
 	return 0;
 }
