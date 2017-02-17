@@ -28,7 +28,7 @@ typedef enum DAYS {
 	SUNDAY    = 6,
 } DAYS;
 
-static int DAYS_IN_MONTH[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+static unsigned DAYS_IN_MONTH[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 bool is_leap_year (unsigned year){
 	return divides(4, year) && (divides(400, year) || !divides(100, year));
@@ -78,6 +78,6 @@ unsigned count_first_of_month_between (unsigned m_s, unsigned y_s, unsigned m_e,
 }
 
 int main(){
-	printf("%d\n", count_first_of_month_between(0, 1901, 1, 2001, SUNDAY));
+	printf("%u\n", count_first_of_month_between(0, 1901, 1, 2001, SUNDAY));
 	return 0;
 }

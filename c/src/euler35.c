@@ -41,7 +41,7 @@ size_t circlular_primes_under(size_t limit){
 			count++;
 		}
 	}
-	free(primes);
+	bfree(primes);
 	return count;
 }
 

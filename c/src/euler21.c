@@ -33,5 +33,5 @@ unsigned sum_amicable_under(unsigned limit){
 int main(){
 	assert(sum_proper_divisors(220) == 284 && sum_proper_divisors(284) == 220);
 	assert(is_amicable(220) && is_amicable(284));
-	printf("%d", sum_amicable_under(10000));
+	printf("%u\n", sum_amicable_under(10000));
 }

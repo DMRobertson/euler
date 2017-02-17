@@ -61,20 +61,20 @@ int num_divisors(int n){
 }
 
 // the number theory function sigma(n) - n
-int sum_proper_divisors(int n){
+unsigned sum_proper_divisors(unsigned n){
 	if (n <= 1){
 		return 0;
 	}
 	//Add the 1 manually to avoid adding the pair (1, n) as part of the loop.
-	int sum = 1;
-	int limit = sqrt(n);
+	unsigned sum = 1;
+	unsigned limit = sqrt(n);
 	//Only count exact sqrts once
 	if (limit * limit == n){
 		sum += limit;
 		limit--;
 	}
 	
-	for (int i = 2; i <= limit; i++){
+	for (unsigned i = 2; i <= limit; i++){
 		if (n % i == 0){
 			sum += i;
 			sum += n/i;

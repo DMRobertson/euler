@@ -220,16 +220,23 @@ def main(args):
 		results[index] = result
 	
 	if args['--summarise-times']:
-		runtime_data = { index: result["time"] for index, result in results.items() }
+		runtime_data = { index: result["time"] for index, result in results.items() if "time" in result }
 		runtimes = list(runtime_data.values())
 		
 		time_extractor = lambda x: x[1]
 		
-		print("min: Problem {} @ {:.2f}s".format( *min(runtime_data.items(), key=time_extractor) ) )
-		print("max: Problem {} @ {:.2f}s".format( *max(runtime_data.items(), key=time_extractor) ) )
-		print("mean: {:.2f}s".format( statistics.mean(runtimes) ) )
-		print("median: {:.2f}s".format( statistics.median(runtimes) ) )
-		print("total: {:.2f}s".format( sum(runtimes) ) )
+		successes = len(runtimes)
+		attempts = len(results)
+		
+		print(successes, "out of", attempts, "problems ran successfully")
+		if successes ==  1:
+			print("Runtime: {:.3f}s".format(runtimes[0]))
+		elif successes > 1:
+			print("min: Problem {} @ {:.3f}s".format( *min(runtime_data.items(), key=time_extractor) ) )
+			print("max: Problem {} @ {:.3f}s".format( *max(runtime_data.items(), key=time_extractor) ) )
+			print("mean: {:.3f}s".format( statistics.mean(runtimes) ) )
+			print("median: {:.3f}s".format( statistics.median(runtimes) ) )
+			print("total: {:.3f}s".format( sum(runtimes) ) )
 	
 	logger.info("Verification script complete")
 

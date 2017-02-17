@@ -14,7 +14,7 @@ NOTE: Do not count spaces or hyphens. For example, 342 (three hundred and forty-
 #define LEN_HUNDRED  7
 #define LEN_AND      3
 
-static int small_numbers[20] = {
+static unsigned small_numbers[20] = {
 	0, // zero has length 4, but we say "twenty" rather than "twenty-zero"
 	3, // one
 	3, // two
@@ -37,7 +37,7 @@ static int small_numbers[20] = {
 	8, // nineteen
 };
 
-static int multiples_of_ten[10] = {
+static unsigned multiples_of_ten[10] = {
 	0, // zero
 	0, // ten; anything below 20 is handled by small_numbers
 	6, // twenty
@@ -50,10 +50,10 @@ static int multiples_of_ten[10] = {
 	6, // ninety
 };
 
-unsigned int letters_in_english(unsigned int num){
+unsigned letters_in_english(unsigned num){
 	assert(num < 1000000);
-	unsigned int total = 0;
-	unsigned int orig = num;
+	unsigned total = 0;
+	unsigned orig = num;
 	if (num >= 1000){
 		total += letters_in_english(num / 1000) + LEN_THOUSAND;
 	}
@@ -76,9 +76,9 @@ unsigned int letters_in_english(unsigned int num){
 	return total;
 }
 
-unsigned int sum_letters_one_to(unsigned int n){
-	unsigned int sum = 0;
-	for (unsigned int i = 1; i <= n; i++){
+unsigned sum_letters_one_to(unsigned n){
+	unsigned sum = 0;
+	for (unsigned i = 1; i <= n; i++){
 		sum += letters_in_english(i);
 	}
 	return sum;
@@ -89,6 +89,6 @@ int main(){
 	assert(letters_in_english( 42) ==  8);
 	assert(letters_in_english(342) == 23);
 	assert(letters_in_english(115) == 20);
-	printf("%d\n", sum_letters_one_to(1000));
+	printf("%u\n", sum_letters_one_to(1000));
 	return 0;
 }

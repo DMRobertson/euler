@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include <assert.h>
 #include <string.h>
+#include <math.h>
 
 size_t ceildiv(size_t num, int div){
 	// return the ceiling of (num/div) == floor ((num + div - 1)/div)
@@ -25,15 +26,7 @@ int powi(int base, int exp){
 }
 
 unsigned digit_length(unsigned n, unsigned base){
-	assert(base > 1);
-	unsigned accumlator = base;
-	unsigned length = 1;
-	while (accumlator <= n){
-		//TODO: detect overflow when multiplying accumlator
-		accumlator *= base;
-		length++;
-	}
-	return length;
+	return ceil(log(n) / log(base));
 }
 
 unsigned smallest_power_above(unsigned n, unsigned base){

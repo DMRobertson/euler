@@ -13,7 +13,7 @@ unsigned largest_pandigital_prime(){
 	// printf("computed sieve\n");
 	for (candidate = 999999999; !(is_pandigital(candidate, 10) && is_prime(candidate)); candidate -= 2);
 	// really want a way of enumerating S_9 here (362880 = 0.36 million as opposed to all numbers between 123456789 and 987654321 = 864197533 options
-	free(sieve);
+	bfree(sieve);
 	return candidate;
 }
 

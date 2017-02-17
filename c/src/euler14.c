@@ -17,12 +17,12 @@ Which starting number, under one million, produces the longest chain?
 NOTE: Once the chain starts the terms are allowed to go above one million.
 */
 
-unsigned int max(unsigned int a, unsigned int b){
+unsigned max(unsigned a, unsigned b){
 	return a < b ? b : a;
 }
 
-unsigned int collatz_length(unsigned int n){
-	unsigned int length = 1;
+unsigned collatz_length(unsigned n){
+	unsigned length = 1;
 	while (n > 1){
 		length++;
 		if (n % 2 == 0){
@@ -34,11 +34,11 @@ unsigned int collatz_length(unsigned int n){
 	return length;
 }
 
-unsigned int max_collatz_chain(unsigned int limit){
-	unsigned int max_length = 0;
-	unsigned int length;
-	unsigned int owner = 0;
-	for (unsigned int i = 1; i < limit; i++){
+unsigned int max_collatz_chain(unsigned limit){
+	unsigned max_length = 0;
+	unsigned length;
+	unsigned owner = 0;
+	for (unsigned i = 1; i < limit; i++){
 		length = collatz_length(i);
 		if (length > max_length){
 			owner = i;
@@ -50,7 +50,6 @@ unsigned int max_collatz_chain(unsigned int limit){
 
 int main(){
 	assert(collatz_length(13) == 10);
-	unsigned int max_length = max_collatz_chain(1000000);
-	printf("%d\n", max_length);
+	printf("%u\n", max_collatz_chain(1000000));
 	return 0;
 }

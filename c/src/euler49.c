@@ -39,6 +39,6 @@ int main(){
 	}
 	end:
 	printf("%zu%zu%zu\n", base, next, last);
-	free(sieve);
+	bfree(sieve);
 	return 0;
 }

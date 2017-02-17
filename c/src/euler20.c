@@ -28,5 +28,5 @@ unsigned digit_sum_fact(unsigned long n){
 
 int main(){
 	assert(digit_sum_fact(10) == 27);
-	printf("%d\n", digit_sum_fact(100));
+	printf("%u\n", digit_sum_fact(100));
 }
