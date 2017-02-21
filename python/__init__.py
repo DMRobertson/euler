@@ -3,7 +3,7 @@ sys.path.insert(1, os.path.join(sys.path[0], '..'))
 import common
 from functools import partial
 
-def get_run_argv(index):
+def get_run_argv(index, debug):
 	return ["python3", "src/euler{}.py".format(index)]
 
 implemented = partial(common.implemented, extension='.py')
