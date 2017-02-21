@@ -18,6 +18,9 @@ unsigned largest_n_pandigital_prime(size_t num_digits){
 	for (size_t i = 0; i < num_digits; i++){
 		digits[i] = i + 1;
 	}
+	
+	//what we really want to do is iterate over the permutations of 1....9 in reverse lexicographic order. Would be slightly more efficient!
+	
 	pstate* state = pnew(num_digits, digits);
 	free(digits);
 	unsigned max = 0;
