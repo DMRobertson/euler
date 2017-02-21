@@ -26,7 +26,7 @@ int powi(int base, int exp){
 }
 
 unsigned digit_length(unsigned n, unsigned base){
-	return ceil(log(n) / log(base));
+	return ceil(log(n+1) / log(base));
 }
 
 unsigned smallest_power_above(unsigned n, unsigned base){
