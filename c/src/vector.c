@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
-
+#include "compare.c"
 // an automatically extendable array of size_t
 
 typedef struct vector {
@@ -47,12 +47,6 @@ size_t vpeek(vector* vector){
 void vfree(vector* vector){
 	free(vector->data);
 	free(vector);
-}
-
-int cmp_size_t(const void* a, const void* b){
-	size_t A = *(size_t*) a;
-	size_t B = *(size_t*) b;
-	return (A > B) - (B > A) ;
 }
 
 bool vcontains_sorted(vector* table, size_t value){

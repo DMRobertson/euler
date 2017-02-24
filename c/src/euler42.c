@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
+#include "compare.c"
 
 /* The nth term of the sequence of triangle numbers is given by, tn = ½n(n+1); so the first ten triangle numbers are:
 
@@ -22,12 +23,6 @@ unsigned* first_n_triangle_numbers(const size_t count){
 		diff++;
 	}
 	return out;
-}
-
-int cmp_unsigned(const void* a, const void* b){
-	unsigned A = *(unsigned*) a;
-	unsigned B = *(unsigned*) b;
-	return (A > B) - (B > A) ;
 }
 
 unsigned count_triangle_words_in(char* filepath){

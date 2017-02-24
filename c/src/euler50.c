@@ -31,10 +31,16 @@ size_t prime_longest_consecutive_prime_sum_below(size_t limit){
 		sum += primes[index];
 	}
 	size_t num_primes = index;
+	unsigned* counts = calloc(num_primes, sizeof(unsigned));
+		
 	partial_sum* state = malloc(sizeof(partial_sum));
 	state->start = 0;
 	state->end = num_primes - 1;
 	state->sum = sum;
+	
+	while(true){
+		index = bsearch(&state->sum, primes, num_primes, sizeof(size_t), compare_size_t);
+	}
 	
 	free(state);
 	
