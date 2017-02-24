@@ -1,3 +1,4 @@
+//prepare: -lm
 #include <stdio.h>
 #include <assert.h>
 #include "integer_maths.c"
@@ -27,7 +28,6 @@ unsigned champernowne_digits_product(unsigned* indices){
 	unsigned upper_index = 10;
 	
 	for (unsigned* target_index = indices; *target_index > 0; target_index++){
-		// printf("Looking for digit index %u\n", *target_index);
 		while (*target_index >= upper_index){
 			lower_value = upper_value;
 			upper_value *= 10;
@@ -36,14 +36,12 @@ unsigned champernowne_digits_product(unsigned* indices){
 			num_digits++;
 			delta_index *= 10;
 			upper_index += delta_index * num_digits;
-			// printf("Value [%u, %u) Index [%u, %u)\n", lower_value, upper_value, lower_index, upper_index);
 		}
 		
 		unsigned value  = lower_value + (*target_index - lower_index) / num_digits;
 		unsigned offset = 1 + (*target_index - lower_index) % num_digits;
 		
 		product *= nth_digit(value, 10, offset);
-		// printf( "need %uth digit of %u namely %u\n", offset, value, nth_digit(value, 10, offset) );
 	}
 	return product;
 }

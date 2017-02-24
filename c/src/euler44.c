@@ -1,3 +1,5 @@
+//prepare: -lm
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -19,15 +21,8 @@ size_t pentagonal(size_t n){
 
 bool is_pentagonal(size_t P){
 	size_t discriminant = 1 + 24*P;
-	// is P a perfect square?
-	size_t candidate = 0;
-	size_t square = 0;
-	while (square < discriminant){
-		candidate++;
-		square = candidate * candidate;
-	}
-	// candidate is the largest integer whose square is <= discriminantadas
-	return (square == discriminant) && (candidate % 6 == 5);
+	size_t candidate = sqrt(discriminant);
+	return (candidate * candidate == discriminant) && (candidate % 6 == 5);
 }
 
 bool pent_contains(vector* table, size_t function(size_t), size_t value){

@@ -1,3 +1,4 @@
+//prepare: -lm
 #include <stdio.h>
 #include <stdbool.h>
 #include <assert.h>
@@ -20,7 +21,7 @@ Where 0.1(6) means 0.166666..., and has a 1-digit recurring cycle. It can be see
 Find the value of d < 1000 for which 1/d contains the longest recurring cycle in its decimal fraction part.
 */
 
-bool already_seen(unsigned digit, barray* digits_seen){
+bool already_seen(const unsigned digit, barray* digits_seen){
 	if (bget(digits_seen, digit)){
 		return true;
 	} else {
@@ -87,6 +88,6 @@ int main(){
 			max_index = i;
 		}
 	}
-	printf("%d\n", max_index);
+	printf("%u\n", max_index);
 	return 0;
 }

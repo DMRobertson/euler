@@ -52,6 +52,6 @@ unsigned denom_prod_fc_fractions() {
 int main(){
 	assert(is_falsely_cancellable(49, 98));
 	assert(!is_falsely_cancellable(30, 50));
-	printf("%d\n", denom_prod_fc_fractions());
+	printf("%u\n", denom_prod_fc_fractions());
 	return 0;
 }

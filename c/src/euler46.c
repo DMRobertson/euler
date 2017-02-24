@@ -4,7 +4,6 @@
 #include <assert.h>
 #include <math.h>
 #include "number_theory.c"
-#include "vector.c"
 
 /* It was proposed by Christian Goldbach that every odd composite number can be written as the sum of a prime and twice a square.
 
@@ -39,11 +38,6 @@ int main(){
 	assert(satisfies_conjecture(27));
 	assert(satisfies_conjecture(33));
 	unsigned candidate = 9;
-	vector* primes = vnew(4);
-	vpush(primes, 2);
-	vpush(primes, 3);
-	vpush(primes, 5);
-	vpush(primes, 7);
 	while (true){
 		if (!satisfies_conjecture(candidate)){
 			break;

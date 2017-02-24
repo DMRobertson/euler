@@ -1,3 +1,4 @@
+//prepare: -lm
 #include <stdio.h>
 #include <stdbool.h>
 #include <assert.h>
@@ -56,6 +57,6 @@ unsigned sum_9_pandigital_products(){
 
 int main(){
 	assert(has_pandigital_factorisation(7254));
-	printf("%d\n", sum_9_pandigital_products());
+	printf("%u\n", sum_9_pandigital_products());
 	return 0;
 }

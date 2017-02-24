@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <stdbool.h>
+#include "vector.c"
 #include "number_theory.c"
 
 /*
@@ -17,60 +18,42 @@ Find the sum of all the positive integers which cannot be written as the sum of 
 
 #define MAX_NOT_SUM_TWO_ABUNDANTS 28123
 
-typedef struct sized_array {
-	size_t length;
-	unsigned* data;
-} sized_array;
-
-sized_array* compute_small_abundants(){
-	// It would be better to use a dynamically sized array that lengthens as needed, rather than do all the work twice.
-	size_t count = 0;
-	for (unsigned i=1; i < MAX_NOT_SUM_TWO_ABUNDANTS; i++){
+vector* compute_small_abundants(){
+	vector* output = vnew(10);
+	for (size_t i=1; i < MAX_NOT_SUM_TWO_ABUNDANTS; i++){
 		if (sum_proper_divisors(i) > i){
-			count++;
-		}
-	}
-	sized_array* output = malloc(sizeof(sized_array));
-	output->length = count;
-	output->data = malloc(sizeof(unsigned) * count);
-	
-	count = 0;
-	for (unsigned i=1; i < MAX_NOT_SUM_TWO_ABUNDANTS; i++){
-		if (sum_proper_divisors(i) > i){
-			output->data[count] = i;
-			count++;
+			vpush(output, i);
 		}
 	}
 	return output;
 }
 
 barray* compute_small_abundant_sums(){
-	sized_array* small_abundants = compute_small_abundants();
+	vector* small_abundants = compute_small_abundants();
 	barray* output = bool_array(MAX_NOT_SUM_TWO_ABUNDANTS);
 	bsetall(output, 0);
 	
-	unsigned* end = small_abundants->data + small_abundants->length;
-	for (unsigned* summand1 = small_abundants->data; summand1 < end; summand1++){
-		for (unsigned* summand2 = summand1; summand2 < end; summand2++){
-			size_t sum = *summand1 + *summand2;
+	const size_t end = small_abundants->length;
+	for (size_t index1 = 0; index1 < end; index1++){
+		size_t summand1 = vget(small_abundants, index1);
+		for (size_t index2 = index1; index2 < end; index2++){
+			size_t sum = summand1 + vget(small_abundants, index2);
 			if (sum > MAX_NOT_SUM_TWO_ABUNDANTS){
 				break;
 			} else {
-				bset(output, sum - 1, true);
+				bset(output, sum, true);
 			}
 		}
 	}
-	
-	free(small_abundants->data);
-	free(small_abundants);
+	vfree(small_abundants);
 	return output;
 }
 
-unsigned sum_not_two_abundant_sum(){
+size_t sum_not_two_abundant_sum(){
 	barray* small_abundant_sums = compute_small_abundant_sums();
-	unsigned total = 0;
+	size_t total = 0;
 	for (size_t i = 1; i <= MAX_NOT_SUM_TWO_ABUNDANTS; i++){
-		if (!bget(small_abundant_sums, i - 1)){
+		if (!bget(small_abundant_sums, i)){
 			total += i;
 		}
 	}
@@ -81,6 +64,6 @@ unsigned sum_not_two_abundant_sum(){
 int main(){
 	assert(sum_proper_divisors(28) == 28);
 	assert(sum_proper_divisors(12) == 16);
-	printf("%d\n", sum_not_two_abundant_sum());
+	printf("%lu\n", sum_not_two_abundant_sum());
 	return 0;
 }

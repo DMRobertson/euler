@@ -12,14 +12,12 @@ How many circular primes are there below one million? */
 
 bool is_circular_prime(unsigned number){
 	// assume given argument is prime
-	// printf("%u, ", number);
 	unsigned length = digit_length(number, 10);
 	unsigned coefficient = powi(10, length - 1);
 	for (unsigned i = 1; i < length; i++){
 		unsigned digit = number % 10;
 		number /= 10;
 		number += digit * coefficient;
-		// printf("%u, ", number);
 		if (!is_prime(number)){
 			return false;
 		}
@@ -31,7 +29,7 @@ size_t circlular_primes_under(size_t limit){
 	if (limit < 2){
 		return 0;
 	}
-	barray* primes = sieve_of_erastosthenes(limit);
+	barray* primes = sieve_of_erastosthenes(limit*10);
 	size_t count = 1; // 2 is a circular prime
 	for (size_t index = 3; index <= limit; index += 2){
 		// todo: if index is a circular prime then we can add it, and all of its cyclic permutations to the sum
@@ -47,8 +45,8 @@ size_t circlular_primes_under(size_t limit){
 
 int main(){
 	assert(digit_length(197, 10) == 3);
-	assert(is_circular_prime(197));
+	assert(is_circular_prime(197));	
 	assert(circlular_primes_under(100) == 13);
-	printf("\n%lu\n", circlular_primes_under(1000000));
+	printf("%lu\n", circlular_primes_under(1000000));
 	return 0;
 }

@@ -17,12 +17,26 @@ The sum of these numbers is 1634 + 8208 + 9474 = 19316.
 
 Find the sum of all the numbers that can be written as the sum of fifth powers of their digits. */
 
+//power_cache[x][y] = x^y for small x and y
+static const unsigned power_cache[10][6] = {
+	{1, 0,  0,  0,     0,     0}, 
+	{1, 1,  1,  1,     1,     1},
+	{1, 2,  4,  8,    16,    32},
+	{1, 3,  9, 27,    81,   243},
+	{1, 4, 16, 64,   256,  1024},
+	{1, 5, 25, 125,  625,  3125},
+	{1, 6, 36, 216, 1296,  3125},
+	{1, 7, 49, 343, 2401, 16807},
+	{1, 8, 64, 512, 4096, 32768},
+	{1, 9, 81, 729, 6561, 59049},
+};
+
 bool number_is_digit_power_sum(unsigned N, unsigned power){
 	unsigned original = N;
 	unsigned sum = 0;
 	while (N > 0){
 		unsigned digit = N % 10;
-		sum += powi(digit, power);
+		sum += power_cache[digit][power];
 		if (sum > original){
 			return false;
 		}

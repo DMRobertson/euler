@@ -33,7 +33,7 @@ void discard_letter(char* letters, size_t discard, size_t size){
 }
 
 alphabet* zero_to(size_t num){
-	assert( 0 < num && num < 10);
+	assert(0 < num && num < 10);
 	alphabet* out = malloc(sizeof(alphabet));
 	out->size = num + 1;
 	out->letters = calloc(out->size, sizeof(char));

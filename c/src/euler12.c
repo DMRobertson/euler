@@ -26,14 +26,21 @@ What is the value of the first triangle number to have over five hundred divisor
 
 
 int main(){
-	unsigned i = 1;
 	unsigned n = 0;
 	unsigned divisors = 0;
 	while (divisors <= 500){
-		n += i;
-		i += 1;
-		divisors = num_divisors(n);
+		n++;
+		//tau is multiplicative and n, n+1 are coprime.
+		//if n is even then n/2 and n+1 are also coprime;
+		//if n is odd then (n+1)/2 and n are coprime.
+		if (n % 2 == 0){
+			divisors = num_divisors(n / 2) * num_divisors(n + 1);
+		} else {
+			divisors = num_divisors(n) * num_divisors((n + 1)/2);
+		}
+		
+		
 	}
-	printf("%u\n", n);
+	printf("%u\n", n * (n + 1) / 2);
 	return 0;
 }

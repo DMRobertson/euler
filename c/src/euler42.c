@@ -24,28 +24,6 @@ unsigned* first_n_triangle_numbers(const size_t count){
 	return out;
 }
 
-size_t max_length_in(FILE* file){
-	size_t longest = 0;
-	size_t length = 0;
-	while (true){
-		char c = fgetc(file);
-		if (c == ',' || c == EOF){
-			//Don't count the quote characters
-			length -= 2;
-			if (length > longest){
-				longest = length;
-			}
-			length = 0;
-		} else {
-			length++;
-		}
-		if (c == EOF){
-			break;
-		}
-	}
-	return longest;
-}
-
 int cmp_unsigned(const void* a, const void* b){
 	unsigned A = *(unsigned*) a;
 	unsigned B = *(unsigned*) b;
@@ -53,7 +31,7 @@ int cmp_unsigned(const void* a, const void* b){
 }
 
 unsigned count_triangle_words_in(char* filepath){
-	FILE* file = fopen(filepath, "r");
+	FILE* file = fopen(filepath, "r");	
 	unsigned* triangle_numbers = first_n_triangle_numbers(26);
 	unsigned count = 0;
 	unsigned score = 0;

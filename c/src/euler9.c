@@ -8,18 +8,22 @@ For example, 3² + 4² = 9 + 16 = 25 = 5².
 
 There exists exactly one Pythagorean triplet for which a + b + c = 1000.
 Find the product abc.
+
+See also euler39.
 */
 unsigned* special_pythag_triple(){
-	unsigned* output = malloc( 3 * sizeof(unsigned) );
-	for (unsigned c = 1; c < 1000; c++){
-		for (unsigned b = 1; b < c; b++){
-			for (unsigned a = 1; a < b; a++){
-				if (a*a + b*b == c*c && a + b + c == 1000){
-					output[0] = a;
-					output[1] = b;
-					output[2] = c;
-					break;
-				}
+	unsigned* output = calloc( 3, sizeof(unsigned) );
+	for (unsigned c = 335; c < 1000; c++){
+		for (unsigned b = 2; b < c; b++){
+			unsigned a = 1000 - b - c;
+			if (a >= b){
+				continue;
+			}
+			if (a*a + b*b == c*c){
+				output[0] = a;
+				output[1] = b;
+				output[2] = c;
+				break;
 			}
 		}
 	}

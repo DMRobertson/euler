@@ -50,8 +50,8 @@ int main(){
 	assert(is_polygon_number(6, H));
 	long unsigned index = 286;
 	while(true){
-		T = polygon_number(3, index);
-		if (is_polygon_number(5, T) && is_polygon_number(6, T)){
+		T = polygon_number(6, index);
+		if (is_polygon_number(5, T) && is_polygon_number(3, T)){
 			break;
 		}
 		index++;

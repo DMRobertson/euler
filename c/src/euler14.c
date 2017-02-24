@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
 
 /*
@@ -21,9 +22,10 @@ unsigned max(unsigned a, unsigned b){
 	return a < b ? b : a;
 }
 
-unsigned collatz_length(unsigned n){
-	unsigned length = 1;
-	while (n > 1){
+unsigned collatz_length(unsigned n, unsigned* cache, size_t cache_length){
+	unsigned length = 0;
+	const unsigned original_n = n;
+	while (n >= cache_length || cache[n] == 0){
 		length++;
 		if (n % 2 == 0){
 			n /= 2;
@@ -31,15 +33,17 @@ unsigned collatz_length(unsigned n){
 			n = 3*n + 1;
 		}
 	}
-	return length;
+	cache[original_n] = cache[n] + length;
+	return cache[original_n];
 }
 
-unsigned int max_collatz_chain(unsigned limit){
+unsigned int max_collatz_chain(unsigned limit, unsigned* cache){
 	unsigned max_length = 0;
 	unsigned length;
 	unsigned owner = 0;
+	
 	for (unsigned i = 1; i < limit; i++){
-		length = collatz_length(i);
+		length = collatz_length(i, cache, limit);
 		if (length > max_length){
 			owner = i;
 			max_length = length;
@@ -49,7 +53,11 @@ unsigned int max_collatz_chain(unsigned limit){
 }
 
 int main(){
-	assert(collatz_length(13) == 10);
-	printf("%u\n", max_collatz_chain(1000000));
+	unsigned limit = 1000000;
+	unsigned* cache = calloc(limit, sizeof(unsigned));
+	cache[1] = 1;
+	
+	assert(collatz_length(13, cache, limit) == 10);
+	printf("%u\n", max_collatz_chain(limit, cache));
 	return 0;
 }

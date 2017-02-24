@@ -111,4 +111,12 @@ bool is_pandigital(unsigned number, unsigned base){
 	return is_pandigital_one_to(number, base, digit_length(number, base));
 }
 
+bool is_square(unsigned number){
+	//http://stackoverflow.com/a/22239147/5252017
+	//Apparently as long as the number isn't too big relative to the accuracy of the floats your using, this gives equal precision to using integer arithmetic.
+	//Assuming doubles are IEEE 754 doubles, this should be fine for number <= 2^53
+	double root = sqrt(number);
+	return root * root == number;
+}
+
 #endif // INTEGER_MATHS_

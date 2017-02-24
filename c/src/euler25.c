@@ -31,7 +31,7 @@ unsigned index_first_fib_with_digits(unsigned digits){
 	mpz_ui_pow_ui(target, 10, digits - 1);
 	
 	unsigned index;
-	for (index = 2; mpz_cmp(current, target) < 0; index++ ){
+	for (index = 2; mpz_cmp(current, target) < 0; index++){
 		mpz_add(next, previous, current);
 		mpz_swap(previous, current);
 		mpz_swap(current, next);

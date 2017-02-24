@@ -28,6 +28,6 @@ unsigned spiral_diagonal_sum(unsigned length){
 
 int main(){
 	assert(spiral_diagonal_sum(5) == 101);
-	printf("%d\n", spiral_diagonal_sum(1001));
+	printf("%u\n", spiral_diagonal_sum(1001));
 	return 0;
 }

@@ -1,3 +1,5 @@
+//prepare: -lm
+
 #include <stdio.h>
 #include <assert.h>
 #include "integer_maths.c"
