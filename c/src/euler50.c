@@ -13,6 +13,30 @@ The longest sum of consecutive primes below one-thousand that adds to a prime, c
 
 Which prime, below one-million, can be written as the sum of the most consecutive primes? */
 
+size_t find_prime_consecutive_sums_with_total(size_t* primes, size_t num_primes, size_t max_summands, size_t initial_sum, size_t limit){
+	for (size_t num_summands = max_summands; num_summands > 0; num_summands--){
+		// Start with p_1 + ... + p_{num_summands}
+		size_t sum = initial_sum;
+		for (size_t start = 0; start <= num_primes - num_summands; start++){
+			size_t end = start + num_summands;
+			// Is sum a prime?
+			if ( bsearch(&sum, primes, num_primes, sizeof(size_t), cmp_size_t ) != NULL) {
+				return sum;
+			}
+			// If not, swap out the first prime and add on the next prime to the end.
+			sum -= primes[start];
+			// primes is null-terminated, so no problem when end == num_primes.
+			sum += primes[end];
+			// This will only increase the sum. If we've breached the limit, try fewer summands.
+			if (sum >= limit){
+				break;
+			}
+		}
+		initial_sum -= primes[num_summands - 1];
+	}
+	return 0;
+}
+
 size_t prime_longest_consecutive_prime_sum_below(size_t limit){
 	barray* sieve = sieve_of_erastosthenes(limit);
 	size_t* primes = gather_sieve(sieve);
@@ -36,29 +60,7 @@ size_t prime_longest_consecutive_prime_sum_below(size_t limit){
 	size_t num_primes = index;
 	
 	// 2. We're going to loop over the possible consecutive sums with num_summands terms in increasing order.
-	size_t output = 0;
-	for (size_t num_summands = max_summands; num_summands > 0; num_summands--){
-		// Start with p_1 + ... + p_{num_summands}
-		size_t sum = initial_sum;
-		for (size_t start = 0; start <= num_primes - num_summands; start++){
-			size_t end = start + num_summands;
-			// Is sum a prime?
-			if ( bsearch(&sum, primes, num_primes, sizeof(size_t), cmp_size_t ) != NULL) {
-				output = sum;
-				goto end;
-			}
-			// If not, swap out the first prime and add on the next prime to the end.
-			sum -= primes[start];
-			// primes is null-terminated, so no problem when end == num_primes.
-			sum += primes[end];
-			// This will only increase the sum. If we've breached the limit, try fewer summands.
-			if (sum >= limit){
-				break;
-			}
-		}
-		initial_sum -= primes[num_summands - 1];
-	}
-	end:
+	size_t output = find_prime_consecutive_sums_with_total(primes, num_primes, max_summands, initial_sum, limit);
 	free(primes);
 	return output;
 }
