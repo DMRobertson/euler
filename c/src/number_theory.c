@@ -7,6 +7,7 @@
 
 #include "packed_bool_array.c"
 #include "integer_maths.c"
+#include "vector.c"
 
 // Some of these functions need to compute the (ceiling or floor of) the square root of a natural number.
 // We do this by casting the number to a double, computing its sqrt from math.h and then casting the ceil/floor back to an integer.
@@ -96,6 +97,18 @@ bool is_prime(int n){
 	return true;
 }
 
+bool is_prime_given_small_primes(size_t n, vector* cache){
+	// Assume cache contains all primes <= sqrt(n)
+	size_t length = cache->length;
+	for (size_t index = 0; index < length; index++){
+		size_t prime = vget(cache, index);
+		if (n % prime == 0){
+			return false;
+		}
+	}
+	return true;
+}
+
 barray* sieve_of_erastosthenes(size_t limit){
 	//The limit is inclusive: 0 <= index <= limit
 	barray* sieve = bool_array(limit + 1);
@@ -145,6 +158,26 @@ unsigned num_distinct_primes_dividing(unsigned n, size_t* small_primes){
 	}
 	
 	return count;
+}
+
+size_t next_prime(vector* primes){
+	size_t candidate;
+	switch (primes->length){
+		case 0:
+			candidate = 2;
+			break;
+		case 1:
+			candidate = 3;
+			break;
+		default:
+			candidate = vpeek(primes);
+			do {
+				candidate += 2;
+			} while (!is_prime_given_small_primes(candidate, primes));
+			break;
+	}
+	vpush(primes, candidate);
+	return candidate;
 }
 
 #endif //NUMBER_THEORY_
