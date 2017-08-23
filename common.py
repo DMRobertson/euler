@@ -18,12 +18,10 @@ def implemented_indices(extension):
 			yield index
 
 def setup(compiled=True):
-	os.makedirs('log',    exist_ok=True)
 	if compiled:
 		os.makedirs('target', exist_ok=True)
 
 def clean(compiled=True):
-	os.rmdir('log')
 	if compiled:
 		os.rmdir('target')
 
